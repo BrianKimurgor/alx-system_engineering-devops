@@ -7,10 +7,9 @@ if [ ! -f /etc/nginx/sites-available/default ]; then
 fi
 
 # Create a new Nginx configuration file for the redirection
-sudo bash -c 'cat > /etc/nginx/sites-available/redirect_me <<EOF
+sudo tee /etc/nginx/sites-available/redirect_me > /dev/null <<EOF
 server {
     listen 80;
-
     server_name _;
 
     location /redirect_me {
@@ -19,13 +18,13 @@ server {
 
     # Additional server configurations if needed
 }
-EOF'
+EOF
 
 # Create a symbolic link to enable the new configuration
-sudo ln -s /etc/nginx/sites-available/redirect_me /etc/nginx/sites-enabled/
+sudo ln -sf /etc/nginx/sites-available/redirect_me /etc/nginx/sites-enabled/
 
-# Reload Nginx to apply the changes
-sudo systemctl reload nginx
+# Restart Nginx to apply the changes
+sudo systemctl restart nginx
 
 # Print success message
 echo "Nginx configured for redirection. Test with 'curl -sI http://your_server_ip/redirect_me/'"
