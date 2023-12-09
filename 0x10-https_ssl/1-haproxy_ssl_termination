@@ -24,10 +24,13 @@ frontend www-http
   default_backend www-backend
 
 frontend www-https
+# bind 0.0.0.0:443 ssl crt /etc/letsencrypt/live/www.kimurgor.tech/fullchain.pem crt /etc/letsencrypt/live/w>
   bind 0.0.0.0:443 ssl crt /etc/letsencrypt/live/www.kimurgor.tech/haproxy.pem
-  http-request add-header X-Forwarded-Proto "https"
+  http-request add-header X-Forwarded-Proto "https" if { ssl_fc }
   default_backend www-backend
 
 backend www-backend
-  balance roundrobin
-  server server1 127.0.0.1:80 check
+    balance  roundrobin
+    redirect scheme https if !{ ssl_fc }
+    server 101278-web-01 100.25.157.4:80 check
+    server 101278-web-02 34.229.56.81:80 check
