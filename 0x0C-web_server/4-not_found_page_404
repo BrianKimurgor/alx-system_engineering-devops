@@ -7,7 +7,7 @@ sudo apt-get update
 sudo apt-get install -y nginx
 
 # Create the custom 404 page
-echo "<html><body><h1>Ceci n'est pas une page</h1></body></html>" | sudo tee /var/www/html/404.html
+echo "Ceci n'est pas une page" | sudo tee /var/www/html/404.html
 
 # Create a new Nginx configuration file
 echo "server {
@@ -22,7 +22,7 @@ echo "server {
   }
 
   error_page 404 /404.html;
-  location = /404.html {
+  location  /404.html {
      root /var/www/html;
      internal;
   }
